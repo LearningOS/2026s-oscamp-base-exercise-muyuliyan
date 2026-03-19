@@ -35,6 +35,7 @@ pub fn concurrent_counter(n_threads: usize, count_per_thread: usize) -> usize {
     for handle in handles {
         handle.join().unwrap();
     }
+    // 这里直接返回*counter·lock().unwrap()会导致编译器报错，因为counter.lock().unwrap()返回的是MutexGuard<usize>，而我们需要的是usize的值。
     let final_count = *counter.lock().unwrap();
     final_count
 }
